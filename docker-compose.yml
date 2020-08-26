@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  lime-web:
+    image: martialblog/limesurvey:4.3.12_200820-apache
+    restart: always
+    environment:
+      - DB_HOST=lime-db
+      - DB_NAME=limesurvey
+      - DB_USERNAME=limesurvey
+      - DB_PASSWORD=password
+      - ADMIN_USER=admin
+      - ADMIN_PASSWORD=password
+      - ADMIN_EMAIL=admin@example.com
+      - TZ=Asia/Tokyo
+    volumes:
+      - lime-web-volume:/var/www/html/upload/surveys
+    ports:
+      - 8080:80
+    depends_on:
+      - lime-db
+  lime-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_DATABASE=limesurvey
+      - MYSQL_USER=limesurvey
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - TZ=Asia/Tokyo
+    ports:
+      - 3306:3306
+    volumes:
+      - lime-db-volume:/var/lib/mysql
+    networks:
+      default:
+        aliases:
+          - lime-db
+volumes:
+  lime-web-volume:
+  lime-db-volume:
+networks:
+  default:
