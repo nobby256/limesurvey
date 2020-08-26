@@ -1,8 +1,14 @@
-version: '3.8'
+version: '3.7'
 services:
   lime-web:
     image: martialblog/limesurvey:4.3.12_200820-apache
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role==manager
     environment:
       - DB_HOST=lime-db
       - DB_NAME=limesurvey
@@ -20,7 +26,13 @@ services:
       - lime-db
   lime-db:
     image: mysql:5.7
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role==manager
     environment:
       - MYSQL_DATABASE=limesurvey
       - MYSQL_USER=limesurvey
