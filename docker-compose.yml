@@ -2,10 +2,10 @@ version: '3.7'
 services:
   lime-web:
     image: martialblog/limesurvey:4.3.12_200820-apache
-    restart: on-failure
+    restart: always
     deploy:
       restart_policy:
-        condition: on-failure
+        condition: any
       placement:
         constraints:
           - node.role==manager
@@ -26,10 +26,10 @@ services:
       - lime-db
   lime-db:
     image: mysql:5.7
-    restart: on-failure
+    restart: always
     deploy:
       restart_policy:
-        condition: on-failure
+        condition: any
       placement:
         constraints:
           - node.role==manager
